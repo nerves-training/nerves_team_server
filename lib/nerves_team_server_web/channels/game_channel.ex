@@ -1,9 +1,12 @@
 defmodule NervesTeamServerWeb.GameChannel do
   use NervesTeamServerWeb, :channel
 
+  alias NervesTeamGame.Lobby
+
   def join("game:lobby", payload, socket) do
     if authorized?(payload) do
-      {:ok, socket}
+      {:ok, player} = Lobby.add_player()
+      {:ok, assign(socket, :player, player)}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -19,6 +22,12 @@ defmodule NervesTeamServerWeb.GameChannel do
   # broadcast to everyone in the current topic (game:lobby).
   def handle_in("shout", payload, socket) do
     broadcast socket, "shout", payload
+    {:noreply, socket}
+  end
+
+  # Pass messages from game server to the client
+  def handle_info({event, payload}, socket) do
+    push(socket, event, payload)
     {:noreply, socket}
   end
 
