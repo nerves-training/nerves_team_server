@@ -12,17 +12,10 @@ defmodule NervesTeamServerWeb.GameChannel do
     end
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
-  end
-
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (game:lobby).
-  def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
-    {:noreply, socket}
+  def handle_in("player:ready", %{"ready" => ready?}, socket) do
+    {:ok, _player} =
+      Lobby.ready_player(socket.assigns.player.id, ready?)
+    {:reply, :ok, socket}
   end
 
   # Pass messages from game server to the client
