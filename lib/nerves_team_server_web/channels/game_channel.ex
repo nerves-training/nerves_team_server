@@ -12,26 +12,20 @@ defmodule NervesTeamServerWeb.GameChannel do
     end
   end
 
-  def join("game:" <> game_id,
-    %{"player_id" => player_id}, socket) do
-
+  def join("game:" <> game_id, %{"player_id" => player_id}, socket) do
     {:ok, player} = Game.player_join(game_id, player_id)
     {:ok, assign(socket, :player, player)}
   end
 
   def handle_in("player:ready", %{"ready" => ready?}, socket) do
-    {:ok, _player} =
-      Lobby.ready_player(socket.assigns.player.id, ready?)
+    {:ok, _player} = Lobby.ready_player(socket.assigns.player.id, ready?)
     {:reply, :ok, socket}
   end
 
-  def handle_in("action:execute", action,
-    %{topic: "game:" <> game_id} = socket) do
-
+  def handle_in("action:execute", action, %{topic: "game:" <> game_id} = socket) do
     Game.action_execute(game_id, action)
     {:reply, :ok, socket}
   end
-
 
   # Pass messages from game server to the client
   def handle_info({event, payload}, socket) do

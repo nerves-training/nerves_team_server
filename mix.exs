@@ -37,8 +37,7 @@ defmodule NervesTeamServer.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:nerves_team_game,
-        github: "nerves-training/nerves_team_game"}
+      {:nerves_team_game, github: "nerves-training/nerves_team_game"}
     ]
   end
 end

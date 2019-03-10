@@ -5,7 +5,9 @@ defmodule NervesTeamServerWeb.ErrorViewTest do
   import Phoenix.View
 
   test "renders 404.json" do
-    assert render(NervesTeamServerWeb.ErrorView, "404.json", []) == %{errors: %{detail: "Not Found"}}
+    assert render(NervesTeamServerWeb.ErrorView, "404.json", []) == %{
+             errors: %{detail: "Not Found"}
+           }
   end
 
   test "renders 500.json" do
